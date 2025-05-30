@@ -442,7 +442,7 @@ class DirectoryDataset:
             if captions is None and caption_file:
                 with open(caption_file) as f:
                     captions = [f.read().strip()]
-            if captions === None:
+            if captions is None:
                 captions = ['']
                 logger.warning(f'Cound not find caption for {image_file}. Using empty caption.')
             if self.directory_config['shuffle_tags'] and self.shuffle == 0: # backwards compatibility
