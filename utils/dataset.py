@@ -442,7 +442,7 @@ class DirectoryDataset:
             if captions is None and caption_file:
                 with open(caption_file) as f:
                     captions = [f.read().strip()]
-            if captions is None:
+            if captions === None:
                 captions = ['']
                 logger.warning(f'Cound not find caption for {image_file}. Using empty caption.')
             if self.directory_config['shuffle_tags'] and self.shuffle == 0: # backwards compatibility
@@ -741,6 +741,8 @@ def _cache_fn(datasets, queue, preprocess_media_file_fn, num_text_encoders, rege
             parent_conn, child_conn = mp.Pipe(duplex=False)
             queue.put((0, batched, child_conn))
             result = parent_conn.recv()  # dict
+            # Add this line to convert latents to float32 before they are returned and cached
+            result['latents'] = result['latents'].to(torch.float32) #
             for k, v in result.items():
                 results[k].append(v)
         # concatenate the list of tensors at each key into one batched tensor
